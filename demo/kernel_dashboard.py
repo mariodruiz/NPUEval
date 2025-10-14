@@ -452,7 +452,7 @@ def main():
 
             ollama_model = st.selectbox(
                 "Ollama Model",
-                options=model_list,
+                options=sorted(model_list),
                 help="Name of the Ollama model to use"
             )
             selected_model = f"ollama:{ollama_model}"
