@@ -12,6 +12,7 @@ from plotly.subplots import make_subplots
 import tempfile
 from typing import Dict, Any, Optional
 
+
 # Import the demo functionality and presets
 from npu_kernel_demo import NPUKernelDemo
 from presets import PRESET_CONFIGS, SUPPORTED_DATA_TYPES
@@ -437,16 +438,21 @@ def main():
             
         else:  # Ollama
             # Ollama configuration
+            import ollama
             api_key = None
             ollama_url = st.text_input(
                 "Ollama URL", 
                 value="http://localhost:11434/v1",
                 help="URL of your Ollama server"
             )
-            
-            ollama_model = st.text_input(
+
+            client = ollama.Client(host=ollama_url.split('v1')[0])
+            models_info = client.list()
+            model_list = [model.model for model in models_info['models']]
+
+            ollama_model = st.selectbox(
                 "Ollama Model",
-                value="llama3.1:8b",
+                options=model_list,
                 help="Name of the Ollama model to use"
             )
             selected_model = f"ollama:{ollama_model}"
